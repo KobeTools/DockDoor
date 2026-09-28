@@ -99,3 +99,4 @@ node_modules/
 kilo.md
 CLAUDE.local.md
 .release.json
+/.derivedData

@@ -32,7 +32,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let state = UpdaterState()
         updaterState = state
 
-        let anUpdaterController = SPUStandardUpdaterController(startingUpdater: true, updaterDelegate: state, userDriverDelegate: nil)
+        let anUpdaterController = SPUStandardUpdaterController(startingUpdater: false, updaterDelegate: state, userDriverDelegate: nil)
         updaterController = anUpdaterController
 
         state.updater = anUpdaterController.updater
@@ -98,10 +98,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 dockLocker = DockLocker()
             }
 
-            if updater.automaticallyChecksForUpdates {
-                print("AppDelegate: Automatic updates enabled, checking in background.")
-                updater.checkForUpdatesInBackground()
-            }
+            // Fork builds from source: Sparkle is never started, so no background checks.
         }
 
         Task(priority: .high) { [weak self] in
@@ -181,7 +178,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         actionsItem.submenu = windowActionsMenu.menu
         menu.addItem(actionsItem)
         menu.addItem(NSMenuItem.separator())
-        menu.addItem(NSMenuItem(title: String(localized: "Check for Updates…"), action: #selector(checkForUpdatesWrapper), keyEquivalent: ""))
         menu.addItem(NSMenuItem(title: String(localized: "Support DockDoor"), action: #selector(openDonationPage), keyEquivalent: ""))
         menu.addItem(NSMenuItem(title: String(localized: "Get DockDoor Pro…"), action: #selector(openProPage), keyEquivalent: ""))
         menu.addItem(NSMenuItem(title: String(localized: "Leave a Review"), action: #selector(openReviewPage), keyEquivalent: ""))
